@@ -79,7 +79,7 @@ def autos_test_price_prediction(X_train, y_train, X_test, y_test):
     best_score = sys.maxsize
     for _ in range(5):
         regressor = MLPRegressor((100, ), early_stopping=True, max_iter=5000,
-                                 validation_fraction=0.2)
+                                 validation_fraction=0.2, activation='logistic')
         regressor.fit(X_train, y_train)
         score = mean_squared_error(regressor.predict(X_test), y_test)
         if score < best_score:
@@ -104,7 +104,7 @@ def main():
         prepare_data(args.path)
 
     if not args.random:
-        np.random.seed(0)
+        np.random.seed(2)
 
     X, y = load_dataset(args.path)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
