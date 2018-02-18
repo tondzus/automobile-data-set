@@ -49,7 +49,7 @@ def load_dataset(path):
 
 
 def autos_feature_selection(X, y):
-    model = Lasso(alpha=0.01)
+    model = Lasso(alpha=0.01, fit_intercept=False)
     model.fit(X, y)
 
     feature_selector = SelectFromModel(model, prefit=True)
@@ -77,7 +77,7 @@ def process_features(features_to_stay, *dfs):
 def autos_test_price_prediction(X_train, y_train, X_test, y_test):
     #best of 5
     best_score = sys.maxsize
-    for _ in range(5):
+    for _ in range(10):
         regressor = MLPRegressor((100, ), early_stopping=True, max_iter=5000,
                                  validation_fraction=0.2, activation='logistic')
         regressor.fit(X_train, y_train)
@@ -104,7 +104,7 @@ def main():
         prepare_data(args.path)
 
     if not args.random:
-        np.random.seed(2)
+        np.random.seed(0)
 
     X, y = load_dataset(args.path)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
